@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Google Login Page</title>
+		<script src="https://accounts.google.com/gsi/client" async defer></script>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				min-height: 100vh;
+				background-color: #f0f2f5;
+				margin: 0;
+			}
+			.login-container {
+				background-color: #fff;
+				padding: 40px;
+				border-radius: 8px;
+				box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+				text-align: center;
+			}
+			h1 {
+				color: #333;
+				margin-bottom: 20px;
+			}
+			#g_id_signin {
+				margin-top: 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="login-container">
+			<h1>Welcome! Please Sign In</h1>
+
+			<!-- Google One Tap / Automatic Sign-In (optional) -->
+			<div
+				id="g_id_onload"
+				data-client_id="1008764936515-kd9piaia6cqq7o3jj7dcfv7oub0j7qv1.apps.googleusercontent.com"
+				data-callback="handleCredentialResponse"
+				data-auto_select="false"
+				data-ux_mode="popup"
+				data-cancel_on_tap_outside="false"
+			></div>
+
+			<!-- Google Sign-In Button -->
+			<div
+				class="g_id_signin"
+				data-type="standard"
+				data-size="large"
+				data-theme="outline"
+				data-text="sign_in_with"
+				data-shape="rectangular"
+				data-logo_alignment="left"
+			></div>
+		</div>
+
+		<script>
+			// Function to handle the Google login response
+			function handleCredentialResponse(response) {
+				console.log("Encoded JWT ID Token: " + response.credential);
+
+				// Store the ID token in sessionStorage (or localStorage)
+				sessionStorage.setItem("google_id_token", response.credential);
+
+				// Redirect to home.html
+				window.location.href = "home.html";
+			}
+
+			
+
+			// For debugging if the script isn't loading, etc.
+			window.onload = function () {
+				if (
+					typeof google === "undefined" ||
+					typeof google.accounts === "undefined"
+				) {
+					console.error("Google Identity Services script did not load.");
+				} else {
+					console.log("Google Identity Services script loaded successfully.");
+				}
+			};
+		</script>
+	</body>
+</html>
