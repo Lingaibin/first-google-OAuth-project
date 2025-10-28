@@ -1,25 +1,12 @@
+
+You said:
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-		<!-- ✅ SEO Meta Tags -->
-		<title>Testing | Home Page</title>
-		<meta name="description" content="A testing homepage that displays user information after Google login authentication." />
-		<meta name="author" content="Testing" />
-		<meta name="keywords" content="Google Login, OAuth, JWT, JavaScript, Testing Project, Web App" />
-		<meta name="robots" content="index, follow" />
-		<meta property="og:title" content="Testing | Home Page" />
-		<meta property="og:description" content="A testing homepage that displays user information after Google login authentication." />
-		<meta property="og:type" content="website" />
-		<meta property="og:url" content="https://yourdomain.com/home.html" />
-		<meta property="og:image" content="https://yourdomain.com/preview-image.jpg" />
-
-		<!-- ✅ Favicon (optional, replace with your own if available) -->
-		<link rel="icon" href="https://yourdomain.com/favicon.ico" />
-
-		<!-- ✅ Your CSS styles -->
+		<title>Home Page</title>
+		<!-- Your CSS styles (keep these in the head) -->
 		<style>
 			body {
 				font-family: Arial, sans-serif;
@@ -113,14 +100,17 @@
 				return JSON.parse(jsonPayload);
 			}
 
+			// Function to decode and display the user's information
 			function displayUserInfo() {
 				const token = sessionStorage.getItem("google_id_token");
 
 				if (token) {
 					try {
+						// jwt_decode should now be defined here
 						const decodedToken = parseJwt(token);
 						console.log("Decoded Token:", decodedToken);
 
+						// Display user details
 						document.getElementById("userName").textContent =
 							decodedToken.name || "User";
 						document.getElementById("userEmail").textContent =
@@ -136,24 +126,31 @@
 							userPicture.style.display = "none";
 						}
 
+						// Display the full decoded token JSON
 						document.getElementById("responseOutput").textContent =
 							JSON.stringify(decodedToken, null, 2);
 					} catch (error) {
 						console.error("Error decoding JWT token:", error);
 						document.getElementById("responseOutput").textContent =
 							"Error decoding token or token invalid.";
+						// Optionally redirect to login if token is invalid or malformed
+						// window.location.href = 'index.html';
 					}
 				} else {
 					console.log("No Google ID token found. Redirecting to login.");
-					window.location.href = "index.html";
+					window.location.href = "index.html"; // Redirect to login if no token
 				}
 			}
 
 			function logout() {
+				// Remove the token from session storage
 				sessionStorage.removeItem("google_id_token");
+				// Redirect to the login page
 				window.location.href = "index.html";
 			}
 
+			// Call displayUserInfo when the page loads
+			// DOMContentLoaded is still good here, as it ensures all elements exist before trying to update them.
 			document.addEventListener("DOMContentLoaded", displayUserInfo);
 		</script>
 	</body>
